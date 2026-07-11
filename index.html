@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agency Financial Model — Project Revenue, Optimize Growth</title>
+    <meta name="description" content="Python CLI tool for AI automation agencies to project revenue, model unit economics, and plan growth. 3 scenarios, 9 industries, 4 tiers.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        .gradient-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a0a2e 30%, #0a1a2e 60%, #0a0a0f 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .gradient-bg::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at 30% 40%, rgba(99,102,241,0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 60%, rgba(139,92,246,0.06) 0%, transparent 50%),
+                        radial-gradient(circle at 50% 80%, rgba(59,130,246,0.05) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        nav .logo { font-weight: 700; font-size: 1.2rem; background: linear-gradient(135deg, #818cf8, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        nav .nav-links { display: flex; gap: 24px; }
+        nav .nav-links a { color: #888; text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+        nav .nav-links a:hover { color: #fff; }
+        .hero {
+            padding: 100px 0 60px; text-align: center;
+        }
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #818cf8, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            font-size: 1.2rem; color: #999; max-width: 700px; margin: 0 auto 32px;
+        }
+        .hero .cta {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #fff; text-decoration: none; padding: 16px 40px;
+            border-radius: 12px; font-weight: 600; font-size: 1.1rem;
+            transition: all 0.3s; box-shadow: 0 4px 20px rgba(99,102,241,0.3);
+        }
+        .hero .cta:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(99,102,241,0.5); }
+        .hero .cta-secondary {
+            display: inline-flex; align-items: center; gap: 8px;
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #ccc; text-decoration: none; padding: 16px 32px;
+            border-radius: 12px; font-weight: 500; margin-left: 16px;
+            transition: all 0.3s;
+        }
+        .hero .cta-secondary:hover { border-color: #6366f1; color: #fff; }
+        .hero .price-tag {
+            display: inline-block; margin-top: 24px;
+            background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2);
+            padding: 8px 20px; border-radius: 20px; font-size: 0.95rem;
+        }
+        .hero .price-tag .price { color: #818cf8; font-weight: 700; }
+        .hero .price-tag .bundle { color: #a78bfa; font-weight: 700; }
+        section { padding: 80px 0; }
+        .section-title { text-align: center; margin-bottom: 48px; }
+        .section-title h2 { font-size: 2rem; font-weight: 700; color: #fff; margin-bottom: 12px; }
+        .section-title p { color: #888; max-width: 600px; margin: 0 auto; }
+        .features-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        .feature-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px; padding: 32px; transition: all 0.3s;
+        }
+        .feature-card:hover { border-color: rgba(99,102,241,0.3); transform: translateY(-4px); background: rgba(99,102,241,0.05); }
+        .feature-card .icon { font-size: 2rem; margin-bottom: 16px; }
+        .feature-card h3 { font-size: 1.1rem; font-weight: 600; color: #fff; margin-bottom: 8px; }
+        .feature-card p { color: #888; font-size: 0.9rem; }
+        .pricing-cards {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px; max-width: 900px; margin: 0 auto;
+        }
+        .pricing-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px; padding: 40px 32px; text-align: center;
+            transition: all 0.3s; position: relative;
+        }
+        .pricing-card.featured {
+            border-color: #6366f1;
+            background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(139,92,246,0.05));
+        }
+        .pricing-card.featured::before {
+            content: 'BEST VALUE'; position: absolute; top: -12px; left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            padding: 4px 16px; border-radius: 12px; font-size: 0.75rem;
+            font-weight: 700; color: #fff; letter-spacing: 1px;
+        }
+        .pricing-card h3 { font-size: 1.3rem; font-weight: 600; color: #fff; margin-bottom: 8px; }
+        .pricing-card .price { font-size: 2.5rem; font-weight: 800; color: #fff; margin: 16px 0; }
+        .pricing-card .price span { font-size: 1rem; color: #888; font-weight: 400; }
+        .pricing-card ul { list-style: none; margin: 24px 0; text-align: left; }
+        .pricing-card ul li { padding: 8px 0; color: #aaa; font-size: 0.9rem; }
+        .pricing-card ul li::before { content: '✓ '; color: #6366f1; font-weight: 700; }
+        .pricing-card .btn {
+            display: inline-block; width: 100%;
+            padding: 14px; border-radius: 12px; font-weight: 600;
+            text-decoration: none; transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.15); color: #fff;
+            background: transparent;
+        }
+        .pricing-card.featured .btn {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none; box-shadow: 0 4px 20px rgba(99,102,241,0.3);
+        }
+        .pricing-card.featured .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(99,102,241,0.5); }
+        .pricing-card .btn:hover { border-color: #6366f1; }
+        .faq-list { max-width: 700px; margin: 0 auto; }
+        .faq-item {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px; padding: 24px; margin-bottom: 16px;
+        }
+        .faq-item h3 { font-size: 1rem; color: #fff; margin-bottom: 8px; }
+        .faq-item p { color: #888; font-size: 0.9rem; }
+        .demo-terminal {
+            background: #0d0d1a; border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px; padding: 0; overflow: hidden;
+            max-width: 750px; margin: 0 auto;
+        }
+        .demo-terminal .terminal-header {
+            display: flex; align-items: center; gap: 8px;
+            padding: 12px 16px; background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .demo-terminal .terminal-header .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .demo-terminal .terminal-header .dot:nth-child(1) { background: #ff5f57; }
+        .demo-terminal .terminal-header .dot:nth-child(2) { background: #ffbd2e; }
+        .demo-terminal .terminal-header .dot:nth-child(3) { background: #28c840; }
+        .demo-terminal .terminal-header span { color: #666; font-size: 0.8rem; margin-left: 12px; }
+        .demo-terminal pre {
+            padding: 24px; font-size: 0.85rem; line-height: 1.5;
+            color: #a0a0c0; overflow-x: auto;
+        }
+        .demo-terminal pre .prompt { color: #6366f1; }
+        .demo-terminal pre .output { color: #88cc88; }
+        .demo-terminal pre .highlight { color: #f472b6; }
+        .email-capture {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px; padding: 48px; text-align: center;
+            max-width: 550px; margin: 0 auto;
+        }
+        .email-capture h3 { font-size: 1.3rem; color: #fff; margin-bottom: 8px; }
+        .email-capture p { color: #888; font-size: 0.9rem; margin-bottom: 24px; }
+        .email-capture form { display: flex; gap: 12px; max-width: 420px; margin: 0 auto; }
+        .email-capture input {
+            flex: 1; padding: 14px 18px; border-radius: 10px;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            color: #fff; font-size: 0.95rem; outline: none;
+        }
+        .email-capture input:focus { border-color: #6366f1; }
+        .email-capture input::placeholder { color: #555; }
+        .email-capture button {
+            padding: 14px 28px; border-radius: 10px; border: none;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #fff; font-weight: 600; cursor: pointer;
+            transition: all 0.3s; white-space: nowrap;
+        }
+        .email-capture button:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(99,102,241,0.3); }
+        .email-capture .note { font-size: 0.75rem; color: #555; margin-top: 16px; }
+        footer {
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding: 40px 0; text-align: center; color: #555; font-size: 0.85rem;
+        }
+        @media (max-width: 640px) {
+            .hero .cta-secondary { margin-left: 0; margin-top: 12px; }
+            .email-capture form { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+<div class="gradient-bg"></div>
+
+<nav class="container">
+    <div class="logo">AI Agency Financial Model</div>
+    <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#demo">Demo</a>
+        <a href="#faq">FAQ</a>
+    </div>
+</nav>
+
+<section class="hero container">
+    <h1>Project Revenue.<br>Model Growth. Plan Your Exit.</h1>
+    <p>A Python CLI tool that gives AI automation agencies a complete financial model — revenue projections, unit economics, hiring plans, and growth scenarios — all from your terminal.</p>
+    <div>
+        <a href="#pricing" class="cta">Buy Now — $14</a>
+        <a href="#demo" class="cta-secondary">▶ See It in Action</a>
+    </div>
+    <div class="price-tag">
+        Standalone <span class="price">$14</span> · Bundle (10+ products) <span class="bundle">$37</span> · Agency License <span class="price">$97</span>
+    </div>
+</section>
+
+<section id="features" class="container">
+    <div class="section-title">
+        <h2>What You Get</h2>
+        <p>Everything you need to build a financial plan that investors and clients take seriously.</p>
+    </div>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="icon">📊</div>
+            <h3>Revenue Projections</h3>
+            <p>Monthly, quarterly, and annual projections with S-curve growth modeling. 24-month horizon by default, fully configurable.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">💰</div>
+            <h3>Unit Economics</h3>
+            <p>CAC, LTV, Gross Margin, and Payback Period calculators. Benchmark against 9 industry averages to validate your numbers.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">📈</div>
+            <h3>3 Growth Scenarios</h3>
+            <p>Conservative (3% MoM), Moderate (7% MoM), and Aggressive (12% MoM). Compare all three side-by-side in one report.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">👥</div>
+            <h3>Hiring & Capacity</h3>
+            <p>4 agency tiers from Solo Operator to Enterprise. Optimizes team size against client load and suggests hiring triggers.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">🔧</div>
+            <h3>3 Modes of Use</h3>
+            <p>Interactive mode for one-off projections, batch CSV mode for bulk analysis, and demo mode with sample data to explore immediately.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">📄</div>
+            <h3>Export Anywhere</h3>
+            <p>Exports to Markdown (for docs), HTML (for sharing), and CSV (for spreadsheets). Zero dependencies — runs on any Python 3.6+.</p>
+        </div>
+    </div>
+</section>
+
+<section id="demo" class="container">
+    <div class="section-title">
+        <h2>See It in Action</h2>
+        <p>Run the demo mode and see a complete projection in under 10 seconds.</p>
+    </div>
+    <div class="demo-terminal">
+        <div class="terminal-header">
+            <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            <span>python3 ai_agency_financial_model.py --demo</span>
+        </div>
+        <pre>
+<span class="prompt">$</span> python3 ai_agency_financial_model.py --demo
+<span class="output">═══════════════════════════════════════════</span>
+<span class="output"> AI Agency Financial Model v1.0.0 — DEMO</span>
+<span class="output">═══════════════════════════════════════════</span>
+
+<span class="highlight">SCENARIO COMPARISON (24 months)</span>
+
+┌─────────────────┬──────────┬──────────┬──────────┐
+│ Metric          │ Consrv.  │ Moderate │ Aggress. │
+├─────────────────┼──────────┼──────────┼──────────┤
+│ Month 12 MRR    │ $12,400  │ $38,200  │ $102,500 │
+│ Month 24 MRR    │ $18,100  │ $142,000 │ $1.12M   │
+│ Total Revenue   │ $198K    │ $792K    │ $3.85M   │
+│ Clients (Mo24)  │ 14       │ 48       │ 142      │
+│ CAC             │ $2,500   │ $2,500   │ $2,500   │
+│ LTV             │ $42,000  │ $42,000  │ $42,000  │
+│ LTV:CAC Ratio   │ 16.8x    │ 16.8x    │ 16.8x    │
+└─────────────────┴──────────┴──────────┴──────────┘
+
+<span class="highlight">TIRE RECOMMENDATION:</span>
+  → <span class="output">Moderate scenario hits Growth tier capacity by Month 15</span>
+  → <span class="output">Recommend hiring 1-2 additional team members by Month 12</span>
+  → <span class="output">Consider raising prices 6% annually to maintain margins</span>
+        </pre>
+    </div>
+</section>
+
+<section id="pricing" class="container">
+    <div class="section-title">
+        <h2>Simple Pricing</h2>
+        <p>Start with the standalone tool or grab the full bundle at 36% off.</p>
+    </div>
+    <div class="pricing-cards">
+        <div class="pricing-card">
+            <h3>Standalone</h3>
+            <div class="price">$14 <span>one-time</span></div>
+            <ul>
+                <li>Full Python CLI tool</li>
+                <li>3 growth scenarios</li>
+                <li>9 industry benchmarks</li>
+                <li>4 agency tiers</li>
+                <li>Interactive + batch + demo</li>
+                <li>MD / HTML / CSV export</li>
+                <li>Lifetime updates</li>
+            </ul>
+            <a href="#" class="btn">Buy Standalone</a>
+        </div>
+        <div class="pricing-card featured">
+            <h3>AI Revenue Toolkit Bundle</h3>
+            <div class="price">$37 <span>one-time</span></div>
+            <ul>
+                <li>✅ Financial Model ($14)</li>
+                <li>✅ Proposal Builder ($17)</li>
+                <li>✅ Audit Tool ($15)</li>
+                <li>✅ ROI Calculator ($15)</li>
+                <li>✅ Case Study Builder ($14)</li>
+                <li>✅ Report Generator ($14)</li>
+                <li>✅ 5+ more tools &amp; packs</li>
+                <li><strong>Save 36% ($58 value)</strong></li>
+            </ul>
+            <a href="https://tennie321.github.io/ai-revenue-toolkit/" class="btn">Buy Bundle — $37</a>
+        </div>
+        <div class="pricing-card">
+            <h3>Agency License</h3>
+            <div class="price">$97 <span>one-time</span></div>
+            <ul>
+                <li>All standalone features</li>
+                <li>White-label ready</li>
+                <li>Use with unlimited clients</li>
+                <li>Custom branding</li>
+                <li>Priority support</li>
+                <li>Bulk CSV processing</li>
+                <li>Commercial use rights</li>
+            </ul>
+            <a href="#" class="btn">Buy Agency License</a>
+        </div>
+    </div>
+</section>
+
+<section id="faq" class="container">
+    <div class="section-title">
+        <h2>Frequently Asked Questions</h2>
+    </div>
+    <div class="faq-list">
+        <div class="faq-item">
+            <h3>Do I need Python experience to use this?</h3>
+            <p>Basic terminal comfort is helpful. The tool runs with a single command: <code>python3 ai_agency_financial_model.py</code>. Interactive mode walks you through every input with clear prompts.</p>
+        </div>
+        <div class="faq-item">
+            <h3>What if I'm not an AI automation agency?</h3>
+            <p>The model works for any service-based business. You can customize the industry benchmarks, service categories, pricing tiers, and growth parameters to match your exact business model.</p>
+        </div>
+        <div class="faq-item">
+            <h3>How are the growth scenarios calculated?</h3>
+            <p>Each scenario uses a compound monthly growth rate (3% conservative, 7% moderate, 12% aggressive) applied to new client acquisition, with configurable churn, price increases, and overhead. The S-curve reflects real-world ramp-up periods.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Can I use this for investor pitches?</h3>
+            <p>Absolutely. The HTML export produces a professional, clean report suitable for investor decks, partner discussions, and board presentations. The MD export works great for embedding in Notion or documentation.</p>
+        </div>
+        <div class="faq-item">
+            <h3>What's included in the bundle?</h3>
+            <p>The AI Revenue Toolkit bundle includes 10+ products: Financial Model, Proposal Builder, Audit Tool, ROI Calculator, Case Study Builder, Client Report Generator, Service Package Generator, Sales Objection Handler, Client Retention Analyzer, Content Repurposing Engine, and more. All for $37.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Is there a refund policy?</h3>
+            <p>Yes. If the tool doesn't help you build a better financial plan within 30 days, email us for a full refund. No questions asked.</p>
+        </div>
+    </div>
+</section>
+
+<section id="capture" class="container">
+    <div class="email-capture">
+        <h3>Get the Free Mini-Model</h3>
+        <p>Drop your email and we'll send you a free 1-page revenue projection template + the demo mode walkthrough.</p>
+        <form action="#" method="post" onsubmit="alert('Thanks! Email capture coming soon — your free mini-model is on the way.'); return false;">
+            <input type="email" placeholder="you@agency.com" required>
+            <button type="submit">Send It →</button>
+        </form>
+        <div class="note">No spam. Unsubscribe anytime. Your data is never shared.</div>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <p>AI Agency Financial Model · Part of the <a href="https://tennie321.github.io/ai-revenue-toolkit/" style="color:#818cf8;text-decoration:none;">AI Revenue Toolkit</a> · © 2026</p>
+    </div>
+</footer>
+</body>
+</html>
